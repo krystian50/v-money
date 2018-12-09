@@ -1,18 +1,16 @@
 import Money from './component'
 import VMoney from './directive'
 import options from './options'
-const VERSION = proccess.env.VERSION
 
 export {
   Money,
   VMoney,
-  options,
-  VERSION
+  options
 }
 
-function install (Vue, globalOptions) {
+function install(Vue, globalOptions) {
   if (globalOptions) {
-    Object.keys(globalOptions).map(function(key){
+    Object.keys(globalOptions).map(function(key) {
       options[key] = globalOptions[key]
     })
   }

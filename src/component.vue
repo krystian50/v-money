@@ -9,14 +9,13 @@
 <script>
 import money from './directive'
 import defaults from './options'
-import {format, unformat} from './utils'
+import { format, unformat } from './utils'
 
 export default {
   name: 'Money',
   props: {
     value: {
       required: true,
-      type: [Number, String],
       default: 0
     },
     masked: {
@@ -45,9 +44,9 @@ export default {
     }
   },
 
-  directives: {money},
+  directives: { money },
 
-  data () {
+  data() {
     return {
       formattedValue: ''
     }
@@ -56,8 +55,14 @@ export default {
   watch: {
     value: {
       immediate: true,
-      handler (newValue, oldValue) {
-        var formatted = format(newValue, this.$props)
+      handler(newValue, oldValue) {
+
+        if (!newValue) {
+          var formatted = '';
+        } else {
+          var formatted = format(newValue, this.$props)
+        }
+
         if (formatted !== this.formattedValue) {
           this.formattedValue = formatted
         }
@@ -66,8 +71,8 @@ export default {
   },
 
   methods: {
-    change (evt) {
-      this.$emit('input', this.masked ? evt.target.value : unformat(evt.target.value, this.precision))
+    change(evt) {
+      this.$emit('input', this.masked ? evt.target.value : ((!evt.target.value) ? '' : unformat(evt.target.value, this.precision)))
     }
   }
 }

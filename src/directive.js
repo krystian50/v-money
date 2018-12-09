@@ -1,8 +1,8 @@
-import {format, setCursor, event} from './utils'
+import { format, setCursor, event } from './utils'
 import assign from './assign'
 import defaults from './options'
 
-export default function (el, binding) {
+export default function(el, binding) {
   if (!binding.value) return
   var opt = assign(defaults, binding.value)
 
@@ -16,9 +16,15 @@ export default function (el, binding) {
     }
   }
 
-  el.oninput = function () {
+  el.oninput = function() {
     var positionFromEnd = el.value.length - el.selectionEnd
-    el.value = format(el.value, opt)
+
+    if (el.value == 'R$ 0,0' || !el.value) {
+      el.value = ''
+    } else {
+      el.value = format(el.value, opt)
+    }
+
     positionFromEnd = Math.max(positionFromEnd, opt.suffix.length) // right
     positionFromEnd = el.value.length - positionFromEnd
     positionFromEnd = Math.max(positionFromEnd, opt.prefix.length + 1) // left
@@ -26,7 +32,7 @@ export default function (el, binding) {
     el.dispatchEvent(event('change')) // v-model.lazy
   }
 
-  el.onfocus = function () {
+  el.onfocus = function() {
     setCursor(el, el.value.length - opt.suffix.length)
   }
 
